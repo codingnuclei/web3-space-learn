@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "projects": {
+    "chain-chat": {
+      "projectType": "application",
+      "root": "apps/chain-chat",
+      "sourceRoot": "apps/chain-chat/src",
+      "prefix": "web3",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/chain-chat",
+            "index": "apps/chain-chat/src/index.html",
+            "main": "apps/chain-chat/src/main.ts",
+            "polyfills": "apps/chain-chat/src/polyfills.ts",
+            "tsConfig": "apps/chain-chat/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/chain-chat/src/favicon.ico", "apps/chain-chat/src/assets"],
+            "styles": ["apps/chain-chat/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/chain-chat/src/environments/environment.ts",
+                  "with": "apps/chain-chat/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "chain-chat:build:production"
+            },
+            "development": {
+              "browserTarget": "chain-chat:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "chain-chat:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/chain-chat/src/**/*.ts", "apps/chain-chat/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/chain-chat"],
+          "options": {
+            "jestConfig": "apps/chain-chat/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "chain-chat-e2e": {
+      "root": "apps/chain-chat-e2e",
+      "sourceRoot": "apps/chain-chat-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/chain-chat-e2e/cypress.json",
+            "devServerTarget": "chain-chat:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "chain-chat:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/chain-chat-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["chain-chat"]
+    },
+    "chain-chat-ethereum-feature-ethereum": {
+      "projectType": "library",
+      "root": "libs/chain-chat/ethereum/feature/ethereum",
+      "sourceRoot": "libs/chain-chat/ethereum/feature/ethereum/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/ethereum/feature/ethereum"],
+          "options": {
+            "jestConfig": "libs/chain-chat/ethereum/feature/ethereum/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/ethereum/feature/ethereum/src/**/*.ts",
+              "libs/chain-chat/ethereum/feature/ethereum/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:feature", "scope:chain-chat"]
+    },
+    "chain-chat-ethereum-guard-only-wallet-installed": {
+      "projectType": "library",
+      "root": "libs/chain-chat/ethereum/guard/only-wallet-installed",
+      "sourceRoot": "libs/chain-chat/ethereum/guard/only-wallet-installed/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/ethereum/guard/only-wallet-installed"],
+          "options": {
+            "jestConfig": "libs/chain-chat/ethereum/guard/only-wallet-installed/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/ethereum/guard/only-wallet-installed/src/**/*.ts",
+              "libs/chain-chat/ethereum/guard/only-wallet-installed/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:util", "scope:chain-chat"]
+    },
+    "chain-chat-no-wallet-connect": {
+      "projectType": "library",
+      "root": "libs/chain-chat/no-wallet-connect",
+      "sourceRoot": "libs/chain-chat/no-wallet-connect/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/no-wallet-connect"],
+          "options": {
+            "jestConfig": "libs/chain-chat/no-wallet-connect/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/no-wallet-connect/src/**/*.ts",
+              "libs/chain-chat/no-wallet-connect/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:feature", "scope:chain-chat"]
+    },
+    "chain-chat-shared-app-config": {
+      "projectType": "library",
+      "root": "libs/chain-chat/shared/app-config",
+      "sourceRoot": "libs/chain-chat/shared/app-config/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/shared/app-config"],
+          "options": {
+            "jestConfig": "libs/chain-chat/shared/app-config/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/shared/app-config/src/**/*.ts",
+              "libs/chain-chat/shared/app-config/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:util", "scope:chain-chat"]
+    },
+    "chain-chat-shared-pipes-address-shrink-pipe": {
+      "projectType": "library",
+      "root": "libs/chain-chat/shared/pipes/address-shrink-pipe",
+      "sourceRoot": "libs/chain-chat/shared/pipes/address-shrink-pipe/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/shared/pipes/address-shrink-pipe"],
+          "options": {
+            "jestConfig": "libs/chain-chat/shared/pipes/address-shrink-pipe/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/shared/pipes/address-shrink-pipe/src/**/*.ts",
+              "libs/chain-chat/shared/pipes/address-shrink-pipe/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:util", "scope:chain-chat"]
+    },
+    "chain-chat-shared-ui-button": {
+      "projectType": "library",
+      "root": "libs/chain-chat/shared/ui/button",
+      "sourceRoot": "libs/chain-chat/shared/ui/button/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/shared/ui/button"],
+          "options": {
+            "jestConfig": "libs/chain-chat/shared/ui/button/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/shared/ui/button/src/**/*.ts",
+              "libs/chain-chat/shared/ui/button/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:ui", "scope:chain-chat"]
+    },
+    "chain-chat-shared-ui-panel": {
+      "projectType": "library",
+      "root": "libs/chain-chat/shared/ui/panel",
+      "sourceRoot": "libs/chain-chat/shared/ui/panel/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/shared/ui/panel"],
+          "options": {
+            "jestConfig": "libs/chain-chat/shared/ui/panel/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/shared/ui/panel/src/**/*.ts",
+              "libs/chain-chat/shared/ui/panel/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:feature", "scope:chain-chat"]
+    },
+    "chain-chat-shared-ui-text-input": {
+      "projectType": "library",
+      "root": "libs/chain-chat/shared/ui/text-input",
+      "sourceRoot": "libs/chain-chat/shared/ui/text-input/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/shared/ui/text-input"],
+          "options": {
+            "jestConfig": "libs/chain-chat/shared/ui/text-input/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/shared/ui/text-input/src/**/*.ts",
+              "libs/chain-chat/shared/ui/text-input/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:ui", "scope:chain-chat"]
+    }
+  }
+}

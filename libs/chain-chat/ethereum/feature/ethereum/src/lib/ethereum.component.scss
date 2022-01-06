@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  height: 500px;
+
+  .panel {
+    height: 100%;
+  }
+
+  .content {
+    display: grid;
+    color: white;
+    grid-template-rows: auto auto 1fr auto;
+    height: 100%;
+
+    &.suspense {
+      place-content: center;
+      grid-template-rows: auto;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      h1 {
+        margin: 0;
+      }
+    }
+
+    .chat-history {
+      display: grid;
+      grid-auto-rows: min-content;
+      margin: 20px 0;
+      overflow-y: scroll;
+
+      .message {
+        font-size: 1.1rem;
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 20px;
+        height: fit-content;
+
+        &.suspense {
+          width: 90%;
+          height: 1.1rem;
+          border-radius: 6px;
+          background: rgb(222 223 227 / 26%);
+          margin: 0 0 10px 0;
+        }
+        .address {
+          justify-self: end;
+          align-self: start;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.651);
+        }
+      }
+    }
+
+    .input {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+    .contract-address {
+      font-size: 0.7rem;
+      color: #ffffffb5;
+      text-align: end;
+      margin: 5px 0 0 0;
+    }
+  }
+
+  #loading {
+    display: inline-block;
+    place-self: center;
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+}

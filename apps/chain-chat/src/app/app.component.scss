@@ -1,0 +1,15 @@
+:host {
+  display: grid;
+  max-width: 900px;
+
+  margin: 0 auto;
+  line-height: 1.5;
+  tab-size: 4;
+  scroll-behavior: smooth;
+
+  header {
+    margin: 50px;
+    text-align: center;
+    color: white;
+  }
+}

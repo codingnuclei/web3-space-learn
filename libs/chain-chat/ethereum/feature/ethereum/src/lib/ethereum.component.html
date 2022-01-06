@@ -1,0 +1,56 @@
+<myWeb3-panel class="panel">
+  <ng-container *rxLet="chainId$; let chainId">
+    <div class="content">
+      <header class="header">
+        <h1>Basic blockchain chat</h1>
+        <ng-container *ngIf="chainId === expectedChainId; else wrongChain">
+          <myWeb3-button *ngIf="addressInContext$ | push as address; else notConnected" class="connected">
+            <button>
+              {{ address | addressShrink }}
+            </button>
+          </myWeb3-button>
+        </ng-container>
+        <ng-template #wrongChain>
+          <myWeb3-button (click)="switchNetwork()" class="alert">
+            <button>Switch Network</button>
+          </myWeb3-button>
+        </ng-template>
+        <ng-template #notConnected>
+          <myWeb3-button>
+            <button (click)="connect()">Connect to App</button>
+          </myWeb3-button>
+        </ng-template>
+      </header>
+
+      <div>ETH Balance: {{ accountBalance$ | push }}</div>
+
+      <div class="chat-history" #chatHistory>
+        <ng-container *ngIf="chatMessages$ | push as chatMessages; else suspenseChat">
+          <div *ngFor="let message of chatMessages" class="message">
+            <div class="address">{{ message.addr | addressShrink }}:</div>
+            <div class="text">{{ message.message }}</div>
+          </div>
+        </ng-container>
+      </div>
+
+      <ng-template #suspenseChat>
+        <div id="loading"></div>
+      </ng-template>
+
+      <div class="input">
+        <myWeb3-text-input>
+          <input [formControl]="message" type="text" placeholder="write message..." />
+        </myWeb3-text-input>
+        <myWeb3-button>
+          <button
+            [disabled]="!message.value || (addressInContext$ | push) === undefined || chainId !== expectedChainId"
+            (click)="addMessage()"
+          >
+            Send
+          </button>
+        </myWeb3-button>
+      </div>
+      <div class="contract-address">Contract Address: {{ chatterAddress }}</div>
+    </div>
+  </ng-container>
+</myWeb3-panel>

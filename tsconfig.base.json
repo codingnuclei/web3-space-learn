@@ -1,0 +1,36 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@myWeb3/chain-chat/ethereum/feature/ethereum": ["libs/chain-chat/ethereum/feature/ethereum/src/index.ts"],
+      "@myWeb3/chain-chat/ethereum/guard/only-wallet-installed": [
+        "libs/chain-chat/ethereum/guard/only-wallet-installed/src/index.ts"
+      ],
+      "@myWeb3/chain-chat/no-wallet-connect": ["libs/chain-chat/no-wallet-connect/src/index.ts"],
+      "@myWeb3/chain-chat/shared/app-config": ["libs/chain-chat/shared/app-config/src/index.ts"],
+      "@myWeb3/chain-chat/shared/pipes/address-shrink-pipe": [
+        "libs/chain-chat/shared/pipes/address-shrink-pipe/src/index.ts"
+      ],
+      "@myWeb3/chain-chat/shared/ui/button": ["libs/chain-chat/shared/ui/button/src/index.ts"],
+      "@myWeb3/chain-chat/shared/ui/panel": ["libs/chain-chat/shared/ui/panel/src/index.ts"],
+      "@myWeb3/chain-chat/shared/ui/text-input": ["libs/chain-chat/shared/ui/text-input/src/index.ts"],
+      "@myWeb3/chain-chat/typechain": ["apps/chain-chat/typechain"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"],
+  "include": ["./scripts", "./test"],
+  "files": ["./hardhat.config.ts"]
+}
