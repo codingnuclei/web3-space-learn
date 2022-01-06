@@ -22,8 +22,7 @@ export class EthereumComponent implements OnInit {
   expectedChainId = this.appConfig.EXPECTED_CHAIN_ID;
 
   provider = ethers.providers.getDefaultProvider(this.appConfig.DEFAULT_PROVIDER_URL, {
-    projectId: this.appConfig.INFURA_PROJECT_ID,
-    projectSecret: this.appConfig.INFURA_SECRET
+    projectId: this.appConfig.INFURA_PROJECT_ID
   });
 
   // can use IFrameEthereumProvider web3Modal to get wallet provider
