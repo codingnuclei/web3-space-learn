@@ -10,11 +10,11 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "fork": "cd apps/chain-chat/blockchain && hardhat node",
-    "compile": "cd apps/chain-chat/blockchain && hardhat compile",
+    "fork": "cd apps/chain-chat/blockchain && NETWORK=local hardhat node",
+    "compile": "cd apps/chain-chat/blockchain && NETWORK=local hardhat compile",
     "deploy:local": "cd apps/chain-chat/blockchain && NETWORK=local hardhat --network localhost deploy",
     "deploy:ropsten": "cd apps/chain-chat/blockchain && NETWORK=ropsten hardhat --network ropsten deploy",
-    "local:clean": "cd apps/chain-chat/blockchain && hardhat clean"
+    "local:clean": "cd apps/chain-chat/blockchain && NETWORK=local hardhat clean"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +28,7 @@
     "@angular/router": "~13.1.0",
     "@ngneat/hot-toast": "^4.1.0",
     "@ngneat/overview": "^3.0.0",
+    "@openzeppelin/contracts": "^4.4.1",
     "@rx-angular/cdk": "latest",
     "@rx-angular/template": "^1.0.0-beta.29",
     "hardhat-deploy": "^0.9.24",

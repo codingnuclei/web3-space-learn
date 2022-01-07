@@ -12,39 +12,30 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
-  CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
+  CallOverrides
+} from 'ethers';
+import { BytesLike } from '@ethersproject/bytes';
+import { Listener, Provider } from '@ethersproject/providers';
+import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi';
+import type { TypedEventFilter, TypedEvent, TypedListener } from './common';
 
 interface ChatterInterface extends ethers.utils.Interface {
   functions: {
-    "addMessage(string)": FunctionFragment;
-    "allMessages()": FunctionFragment;
-    "latestMessage()": FunctionFragment;
+    'SPT()': FunctionFragment;
+    'addMessage(string)': FunctionFragment;
+    'allMessages()': FunctionFragment;
+    'latestMessage()': FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "addMessage", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "allMessages",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "latestMessage",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: 'SPT', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'addMessage', values: [string]): string;
+  encodeFunctionData(functionFragment: 'allMessages', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'latestMessage', values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "addMessage", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "allMessages",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "latestMessage",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'SPT', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'addMessage', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'allMessages', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'latestMessage', data: BytesLike): Result;
 
   events: {};
 }
@@ -93,52 +84,45 @@ export class Chatter extends BaseContract {
   interface: ChatterInterface;
 
   functions: {
+    SPT(overrides?: CallOverrides): Promise<[string]>;
+
     addMessage(
       _meesage: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    allMessages(
-      overrides?: CallOverrides
-    ): Promise<[([string, string] & { addr: string; message: string })[]]>;
+    allMessages(overrides?: CallOverrides): Promise<[([string, string] & { addr: string; message: string })[]]>;
 
-    latestMessage(
-      overrides?: CallOverrides
-    ): Promise<[[string, string] & { addr: string; message: string }]>;
+    latestMessage(overrides?: CallOverrides): Promise<[[string, string] & { addr: string; message: string }]>;
   };
+
+  SPT(overrides?: CallOverrides): Promise<string>;
 
   addMessage(
     _meesage: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  allMessages(
-    overrides?: CallOverrides
-  ): Promise<([string, string] & { addr: string; message: string })[]>;
+  allMessages(overrides?: CallOverrides): Promise<([string, string] & { addr: string; message: string })[]>;
 
-  latestMessage(
-    overrides?: CallOverrides
-  ): Promise<[string, string] & { addr: string; message: string }>;
+  latestMessage(overrides?: CallOverrides): Promise<[string, string] & { addr: string; message: string }>;
 
   callStatic: {
+    SPT(overrides?: CallOverrides): Promise<string>;
+
     addMessage(_meesage: string, overrides?: CallOverrides): Promise<void>;
 
-    allMessages(
-      overrides?: CallOverrides
-    ): Promise<([string, string] & { addr: string; message: string })[]>;
+    allMessages(overrides?: CallOverrides): Promise<([string, string] & { addr: string; message: string })[]>;
 
-    latestMessage(
-      overrides?: CallOverrides
-    ): Promise<[string, string] & { addr: string; message: string }>;
+    latestMessage(overrides?: CallOverrides): Promise<[string, string] & { addr: string; message: string }>;
   };
 
   filters: {};
 
   estimateGas: {
-    addMessage(
-      _meesage: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    SPT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    addMessage(_meesage: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>;
 
     allMessages(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -146,6 +130,8 @@ export class Chatter extends BaseContract {
   };
 
   populateTransaction: {
+    SPT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     addMessage(
       _meesage: string,
       overrides?: Overrides & { from?: string | Promise<string> }

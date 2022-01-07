@@ -1,6 +1,6 @@
 :host {
   display: block;
-  height: 500px;
+  height: 550px;
 
   .panel {
     height: 100%;
@@ -9,7 +9,7 @@
   .content {
     display: grid;
     color: white;
-    grid-template-rows: auto auto 1fr auto;
+    grid-template-rows: auto 1fr auto;
     height: 100%;
 
     &.suspense {
@@ -18,39 +18,56 @@
     }
 
     .header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
+      margin: 0 0 10px 0;
+
       h1 {
         margin: 0;
       }
     }
 
-    .chat-history {
+    section {
       display: grid;
-      grid-auto-rows: min-content;
-      margin: 20px 0;
-      overflow-y: scroll;
+      grid-template-columns: 1fr 250px;
+      gap: 10px;
 
-      .message {
-        font-size: 1.1rem;
+      overflow-y: hidden;
+      .chat-history {
         display: grid;
-        grid-template-columns: 150px 1fr;
-        gap: 20px;
-        height: fit-content;
+        grid-auto-rows: min-content;
+        padding: 10px 15px;
+        overflow-y: scroll;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
 
-        &.suspense {
-          width: 90%;
-          height: 1.1rem;
-          border-radius: 6px;
-          background: rgb(222 223 227 / 26%);
-          margin: 0 0 10px 0;
+        .message {
+          font-size: 1.1rem;
+          display: grid;
+          grid-template-columns: 120px 1fr;
+          gap: 20px;
+          height: fit-content;
+
+          &.suspense {
+            width: 90%;
+            height: 1.1rem;
+            border-radius: 6px;
+            background: rgb(222 223 227 / 26%);
+            margin: 0 0 10px 0;
+          }
+          .address {
+            justify-self: end;
+            align-self: start;
+            color: rgba(255, 255, 255, 0.651);
+          }
         }
-        .address {
-          justify-self: end;
-          align-self: start;
-          font-size: 0.9rem;
-          color: rgba(255, 255, 255, 0.651);
+      }
+
+      .actions {
+        display: grid;
+        grid-template-rows: auto auto auto auto auto 1fr;
+        gap: 10px;
+
+        .address-input {
+          height: 40px;
         }
       }
     }
@@ -59,7 +76,9 @@
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
+      margin: 10px 0 0 0;
     }
+
     .contract-address {
       font-size: 0.7rem;
       color: #ffffffb5;

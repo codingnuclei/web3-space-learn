@@ -10,9 +10,14 @@ All projects are prototypes which are nowhere near production ready!!
 
 - Have correct .env file in app folder - e.g `apps/chain-chat/env.example`
 
-## Local node fork
+## Local dev
+
+running fork will compile and deploy automatically
 
 - `npm run fork`
+- update `.env`
+- `npm run config:local -- --environment=dev`
+- `npm run start`
 
 ## Local contract deployment
 

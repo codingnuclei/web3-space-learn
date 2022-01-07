@@ -7,10 +7,16 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "attributeGroups": [
-    "$ANGULAR_STRUCTURAL_DIRECTIVE",
-    "$ANGULAR_INPUT",
-    "$ANGULAR_OUTPUT",
-    "$ANGULAR_TWO_WAY_BINDING"
+  "attributeGroups": ["$ANGULAR_STRUCTURAL_DIRECTIVE", "$ANGULAR_INPUT", "$ANGULAR_OUTPUT", "$ANGULAR_TWO_WAY_BINDING"],
+  "overrides": [
+    {
+      "files": "*.sol",
+      "options": {
+        "printWidth": 120,
+        "tabWidth": 4,
+        "explicitTypes": "always",
+        "singleQuote": false
+      }
+    }
   ]
 }

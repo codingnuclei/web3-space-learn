@@ -7,14 +7,14 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy(CONTRACTS['chatter'], {
+  await deploy(CONTRACTS['SPT'], {
     from: deployer,
-    args: ['Welcome to chatter.'],
+    args: [10000000],
     log: true,
     skipIfAlreadyDeployed: true
   });
 };
 
-func.tags = [CONTRACTS['chatter'], 'setup', 'core'];
+func.tags = [CONTRACTS['SPT'], 'setup', 'token'];
 
 export default func;

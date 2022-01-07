@@ -2,9 +2,10 @@ import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AppConfig, APP_CONFIG } from '@myWeb3/chain-chat/shared/app-config';
-import { Chatter__factory } from '@myWeb3/chain-chat/typechain';
+import { Chatter__factory, SpaceChatERC20Token__factory } from '@myWeb3/chain-chat/blockchain/types';
 import { HotToastService } from '@ngneat/hot-toast';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
+import { parseUnits } from 'ethers/lib/utils';
 import { filter, from, fromEvent, map, merge, ReplaySubject, share, Subject, switchMap, take, tap } from 'rxjs';
 
 @Component({
@@ -14,11 +15,10 @@ import { filter, from, fromEvent, map, merge, ReplaySubject, share, Subject, swi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EthereumComponent implements OnInit {
-  @ViewChild('chatHistory') chatHistory!: ElementRef;
-
   message = new FormControl('');
 
   chatterAddress = this.appConfig.CHATTER_CONTRACT_ADDRESS;
+  tokenAddress = this.appConfig.SPACE_TOKEN_ADDRESS;
   expectedChainId = this.appConfig.EXPECTED_CHAIN_ID;
 
   provider = ethers.providers.getDefaultProvider(this.appConfig.DEFAULT_PROVIDER_URL, {
@@ -28,8 +28,6 @@ export class EthereumComponent implements OnInit {
   // can use IFrameEthereumProvider web3Modal to get wallet provider
   walletProvider = (this.document.defaultView as any).ethereum;
   connectedProvider = new ethers.providers.Web3Provider(this.walletProvider, 'any');
-
-  onActionConnectAccount$ = new ReplaySubject(1);
 
   initialAccount$ = from(
     this.walletProvider.request({
@@ -41,6 +39,7 @@ export class EthereumComponent implements OnInit {
   );
 
   accountChanges$ = fromEvent<string[]>(this.walletProvider, 'accountsChanged').pipe(map(accounts => accounts[0]));
+  onActionConnectAccount$ = new ReplaySubject(1);
 
   addressInContext$ = merge(this.initialAccount$, this.accountChanges$, this.onActionConnectAccount$).pipe(
     tap(newAccount => {
@@ -56,7 +55,23 @@ export class EthereumComponent implements OnInit {
     })
   );
 
+  manualFetchTokenBalance$ = new Subject();
+  manualFetchRemainingAllowance$ = new Subject();
+
   accountBalance$ = this.addressInContext$.pipe(switchMap((address: string) => this.requestAccountBalance(address)));
+  tokenBalance$ = merge(this.addressInContext$, this.manualFetchTokenBalance$).pipe(
+    switchMap((address: string) => this.fetchTokenBalance(address))
+  );
+
+  remainingAllowance$ = merge(this.addressInContext$, this.manualFetchRemainingAllowance$).pipe(
+    switchMap((address: string) => this.getAllowance(address)),
+    share({
+      connector: () => new ReplaySubject(1),
+      resetOnComplete: false,
+      resetOnError: false,
+      resetOnRefCountZero: true
+    })
+  );
 
   chainId$ = from(this.requestChainId()).pipe(
     tap(chainId => {
@@ -66,7 +81,7 @@ export class EthereumComponent implements OnInit {
     })
   );
 
-  chatMessages$ = new Subject<{ addr: string; message: string }[]>();
+  chatMessages$ = new ReplaySubject<{ addr: string; message: string }[]>(1);
 
   constructor(
     @Inject(APP_CONFIG) private appConfig: AppConfig,
@@ -94,6 +109,33 @@ export class EthereumComponent implements OnInit {
     });
   }
 
+  async getAllowance(address: string) {
+    const token = SpaceChatERC20Token__factory.connect(this.tokenAddress, this.provider);
+    const allowance = await token.allowance(address, this.appConfig.CHATTER_CONTRACT_ADDRESS);
+    return ethers.utils.formatEther(allowance);
+  }
+
+  async fetchTokenBalance(address: string) {
+    const token = SpaceChatERC20Token__factory.connect(this.tokenAddress, this.provider);
+    const balance = await token.balanceOf(address);
+    return ethers.utils.formatEther(balance);
+  }
+
+  async addToken() {
+    await this.walletProvider.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: this.tokenAddress,
+          symbol: 'SPT',
+          decimals: 18,
+          image: 'https://cdn.svgapi.com/vector/92139/space-ship.svg'
+        }
+      }
+    });
+  }
+
   async connect() {
     const accounts = await this.walletProvider.request({
       method: 'eth_requestAccounts'
@@ -104,14 +146,7 @@ export class EthereumComponent implements OnInit {
   fetchChatMessages() {
     const contract = Chatter__factory.connect(this.chatterAddress, this.provider);
 
-    return from(contract.allMessages()).pipe(
-      tap(() => {
-        setTimeout(() => {
-          const xH = this.chatHistory.nativeElement.scrollHeight;
-          this.chatHistory.nativeElement.scrollTo(0, xH);
-        }, 0);
-      })
-    );
+    return from(contract.allMessages());
   }
 
   async requestAccountBalance(address: string) {
@@ -135,11 +170,56 @@ export class EthereumComponent implements OnInit {
     });
   }
 
+  async approve() {
+    const token = SpaceChatERC20Token__factory.connect(this.tokenAddress, this.connectedProvider.getSigner());
+    const signer = this.connectedProvider.getSigner();
+    const signerAddress = await signer.getAddress();
+
+    const transaction = await token.approve(
+      this.appConfig.CHATTER_CONTRACT_ADDRESS,
+      ethers.utils.parseUnits('2000000000', 'gwei').toString()
+    );
+    from(transaction.wait())
+      .pipe(
+        this.toast.observe({
+          loading: 'Approving...',
+          success: 'Approve Success',
+          error: 'Could not approve.'
+        })
+        // switchMap(() => this.fetchTokenBalance().pipe(take(1)))
+      )
+      .subscribe({
+        next: x => {
+          this.manualFetchRemainingAllowance$.next(signerAddress);
+        }
+      });
+  }
+
+  async transfer(to: string) {
+    const token = SpaceChatERC20Token__factory.connect(this.tokenAddress, this.connectedProvider.getSigner());
+    const decimals = await token.decimals();
+    const volume = parseUnits('100', decimals);
+    const transaction = await token.transfer(to, volume);
+    from(transaction.wait())
+      .pipe(
+        this.toast.observe({
+          loading: 'Transferring...',
+          success: 'Transfer Success',
+          error: 'Could not transfer.'
+        })
+        // switchMap(() => this.fetchTokenBalance().pipe(take(1)))
+      )
+      .subscribe({
+        next: () => this.document.defaultView?.location.reload()
+      });
+  }
+
   async addMessage() {
     if (!this.message.value) {
       return;
     }
     const signer = this.connectedProvider.getSigner();
+    const signerAddress = await signer.getAddress();
     const contract = Chatter__factory.connect(this.chatterAddress, signer);
 
     const transaction = await contract.addMessage(this.message.value);
@@ -147,14 +227,18 @@ export class EthereumComponent implements OnInit {
     from(transaction.wait())
       .pipe(
         this.toast.observe({
-          loading: 'Saving...',
+          loading: 'Saving...Balances might be inaccurate till complete',
           success: 'Message saved!',
           error: 'Could not save.'
         }),
         switchMap(() => this.fetchChatMessages().pipe(take(1)))
       )
       .subscribe({
-        next: messages => this.chatMessages$.next(messages)
+        next: messages => {
+          this.chatMessages$.next(messages);
+          this.manualFetchTokenBalance$.next(signerAddress);
+          this.manualFetchRemainingAllowance$.next(signerAddress);
+        }
       });
   }
 }

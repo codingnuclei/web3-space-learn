@@ -221,6 +221,32 @@
       },
       "tags": ["type:util", "scope:chain-chat"]
     },
+    "chain-chat-shared-directives-fix-scroll-to-bottom": {
+      "projectType": "library",
+      "root": "libs/chain-chat/shared/directives/fix-scroll-to-bottom",
+      "sourceRoot": "libs/chain-chat/shared/directives/fix-scroll-to-bottom/src",
+      "prefix": "myWeb3",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chain-chat/shared/directives/fix-scroll-to-bottom"],
+          "options": {
+            "jestConfig": "libs/chain-chat/shared/directives/fix-scroll-to-bottom/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chain-chat/shared/directives/fix-scroll-to-bottom/src/**/*.ts",
+              "libs/chain-chat/shared/directives/fix-scroll-to-bottom/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["type:util", "scope:chain-chat"]
+    },
     "chain-chat-shared-pipes-address-shrink-pipe": {
       "projectType": "library",
       "root": "libs/chain-chat/shared/pipes/address-shrink-pipe",

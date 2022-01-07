@@ -1,4 +1,4 @@
 export const CONTRACTS: Record<string, string> = {
-    chatter: "Chatter",
-
+  chatter: 'Chatter',
+  SPT: 'SpaceChatERC20Token'
 };

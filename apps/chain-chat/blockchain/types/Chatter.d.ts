@@ -21,15 +21,18 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from './common';
 
 interface ChatterInterface extends ethers.utils.Interface {
   functions: {
+    'SPT()': FunctionFragment;
     'addMessage(string)': FunctionFragment;
     'allMessages()': FunctionFragment;
     'latestMessage()': FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: 'SPT', values?: undefined): string;
   encodeFunctionData(functionFragment: 'addMessage', values: [string]): string;
   encodeFunctionData(functionFragment: 'allMessages', values?: undefined): string;
   encodeFunctionData(functionFragment: 'latestMessage', values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: 'SPT', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'addMessage', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'allMessages', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'latestMessage', data: BytesLike): Result;
@@ -81,6 +84,8 @@ export class Chatter extends BaseContract {
   interface: ChatterInterface;
 
   functions: {
+    SPT(overrides?: CallOverrides): Promise<[string]>;
+
     addMessage(
       _meesage: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -90,6 +95,8 @@ export class Chatter extends BaseContract {
 
     latestMessage(overrides?: CallOverrides): Promise<[[string, string] & { addr: string; message: string }]>;
   };
+
+  SPT(overrides?: CallOverrides): Promise<string>;
 
   addMessage(
     _meesage: string,
@@ -101,6 +108,8 @@ export class Chatter extends BaseContract {
   latestMessage(overrides?: CallOverrides): Promise<[string, string] & { addr: string; message: string }>;
 
   callStatic: {
+    SPT(overrides?: CallOverrides): Promise<string>;
+
     addMessage(_meesage: string, overrides?: CallOverrides): Promise<void>;
 
     allMessages(overrides?: CallOverrides): Promise<([string, string] & { addr: string; message: string })[]>;
@@ -111,6 +120,8 @@ export class Chatter extends BaseContract {
   filters: {};
 
   estimateGas: {
+    SPT(overrides?: CallOverrides): Promise<BigNumber>;
+
     addMessage(_meesage: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>;
 
     allMessages(overrides?: CallOverrides): Promise<BigNumber>;
@@ -119,6 +130,8 @@ export class Chatter extends BaseContract {
   };
 
   populateTransaction: {
+    SPT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     addMessage(
       _meesage: string,
       overrides?: Overrides & { from?: string | Promise<string> }

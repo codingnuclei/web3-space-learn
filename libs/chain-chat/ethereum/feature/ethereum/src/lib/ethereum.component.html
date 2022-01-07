@@ -3,12 +3,42 @@
     <div class="content">
       <header class="header">
         <h1>Basic blockchain chat</h1>
+      </header>
+      <section>
+        <ng-container *ngIf="chatMessages$ | push as chatMessages; else suspenseChat">
+          <div [myWeb3FixScrollToBottom]="chatMessages" class="chat-history">
+            <div *ngFor="let message of chatMessages" class="message">
+              <div class="address">{{ message.addr | addressShrink }}:</div>
+              <div class="text">{{ message.message }}</div>
+            </div>
+          </div>
+        </ng-container>
+
         <ng-container *ngIf="chainId === expectedChainId; else wrongChain">
-          <myWeb3-button *ngIf="addressInContext$ | push as address; else notConnected" class="connected">
-            <button>
-              {{ address | addressShrink }}
-            </button>
-          </myWeb3-button>
+          <div class="actions">
+            <myWeb3-button *ngIf="addressInContext$ | push as address; else notConnected" class="connected">
+              <button>
+                {{ address | addressShrink }}
+              </button>
+            </myWeb3-button>
+            <myWeb3-button (click)="addToken()">
+              <button>Import SPT</button>
+            </myWeb3-button>
+            <myWeb3-text-input class="address-input">
+              <input #addressInput type="text" placeholder="address" />
+            </myWeb3-text-input>
+            <myWeb3-button (click)="transfer(addressInput.value)">
+              <button>Transfer Funds</button>
+            </myWeb3-button>
+            <myWeb3-button (click)="approve()">
+              <button>Approve</button>
+            </myWeb3-button>
+            <div>
+              <div>ETH Balance: {{ accountBalance$ | push }}</div>
+              <div>SPT Balance: {{ tokenBalance$ | push }}</div>
+              <div>Remaining allowance: {{ remainingAllowance$ | push }}</div>
+            </div>
+          </div>
         </ng-container>
         <ng-template #wrongChain>
           <myWeb3-button (click)="switchNetwork()" class="alert">
@@ -20,21 +50,12 @@
             <button (click)="connect()">Connect to App</button>
           </myWeb3-button>
         </ng-template>
-      </header>
-
-      <div>ETH Balance: {{ accountBalance$ | push }}</div>
-
-      <div class="chat-history" #chatHistory>
-        <ng-container *ngIf="chatMessages$ | push as chatMessages; else suspenseChat">
-          <div *ngFor="let message of chatMessages" class="message">
-            <div class="address">{{ message.addr | addressShrink }}:</div>
-            <div class="text">{{ message.message }}</div>
-          </div>
-        </ng-container>
-      </div>
+      </section>
 
       <ng-template #suspenseChat>
-        <div id="loading"></div>
+        <div class="chat-history">
+          <div id="loading"></div>
+        </div>
       </ng-template>
 
       <div class="input">
@@ -43,10 +64,15 @@
         </myWeb3-text-input>
         <myWeb3-button>
           <button
-            [disabled]="!message.value || (addressInContext$ | push) === undefined || chainId !== expectedChainId"
+            [disabled]="
+              !message.value ||
+              (addressInContext$ | push) === undefined ||
+              (remainingAllowance$ | push) === '0.0' ||
+              chainId !== expectedChainId
+            "
             (click)="addMessage()"
           >
-            Send
+            Post
           </button>
         </myWeb3-button>
       </div>
