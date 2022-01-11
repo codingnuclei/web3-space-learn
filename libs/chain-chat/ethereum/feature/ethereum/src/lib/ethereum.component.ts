@@ -1,10 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AppConfig, APP_CONFIG } from '@myWeb3/chain-chat/shared/app-config';
 import { Chatter__factory, SpaceChatERC20Token__factory } from '@myWeb3/chain-chat/blockchain/types';
+import { AppConfig, APP_CONFIG } from '@myWeb3/chain-chat/shared/app-config';
 import { HotToastService } from '@ngneat/hot-toast';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { filter, from, fromEvent, map, merge, ReplaySubject, share, Subject, switchMap, take, tap } from 'rxjs';
 
@@ -182,8 +182,8 @@ export class EthereumComponent implements OnInit {
     from(transaction.wait())
       .pipe(
         this.toast.observe({
-          loading: 'Approving...',
-          success: 'Approve Success',
+          loading: { content: 'Approving...', duration: 3000000 },
+          success: { content: 'Approve Success', duration: 3000 },
           error: 'Could not approve.'
         })
         // switchMap(() => this.fetchTokenBalance().pipe(take(1)))
@@ -203,8 +203,8 @@ export class EthereumComponent implements OnInit {
     from(transaction.wait())
       .pipe(
         this.toast.observe({
-          loading: 'Transferring...',
-          success: 'Transfer Success',
+          loading: { content: 'Transferring...', duration: 3000000 },
+          success: { content: 'Transfer Success', duration: 3000 },
           error: 'Could not transfer.'
         })
         // switchMap(() => this.fetchTokenBalance().pipe(take(1)))
@@ -227,9 +227,9 @@ export class EthereumComponent implements OnInit {
     from(transaction.wait())
       .pipe(
         this.toast.observe({
-          loading: 'Saving...Balances might be inaccurate till complete',
-          success: 'Message saved!',
-          error: 'Could not save.'
+          loading: { content: 'Posting...Balances might be inaccurate till complete', duration: 3000000 },
+          success: { content: 'Message posted', duration: 3000 },
+          error: 'Could not post.'
         }),
         switchMap(() => this.fetchChatMessages().pipe(take(1)))
       )
