@@ -38,7 +38,7 @@ contract Chatter {
     function addMessage(string memory _meesage) public {
         require(SPT.balanceOf(msg.sender) > 1 * (10**18), "Insufficient funds");
         SPT.transferFrom(msg.sender, deployersAddr, 1 * (10**18));
-        console.log("Adding new chate message - '%s'", _meesage);
+        console.log("Adding new message message - '%s'", _meesage);
         chatMessages.push(ChatMessage(msg.sender, _meesage));
     }
 }

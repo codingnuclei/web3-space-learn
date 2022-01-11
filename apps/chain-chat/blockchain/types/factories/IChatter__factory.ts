@@ -2,68 +2,68 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from 'ethers';
-import { Provider } from '@ethersproject/providers';
-import type { IChatter, IChatterInterface } from '../IChatter';
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { IChatter, IChatterInterface } from "../IChatter";
 
 const _abi = [
   {
     inputs: [],
-    name: 'addMessage',
+    name: "addMessage",
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [],
-    name: 'allMessages',
+    name: "allMessages",
     outputs: [
       {
         components: [
           {
-            internalType: 'address',
-            name: 'addr',
-            type: 'address'
+            internalType: "address",
+            name: "addr",
+            type: "address",
           },
           {
-            internalType: 'string',
-            name: 'message',
-            type: 'string'
-          }
+            internalType: "string",
+            name: "message",
+            type: "string",
+          },
         ],
-        internalType: 'struct ChatMessage[]',
-        name: '',
-        type: 'tuple[]'
-      }
+        internalType: "struct ChatMessage[]",
+        name: "",
+        type: "tuple[]",
+      },
     ],
-    stateMutability: 'view',
-    type: 'function'
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [],
-    name: 'latestMessage',
+    name: "latestMessage",
     outputs: [
       {
         components: [
           {
-            internalType: 'address',
-            name: 'addr',
-            type: 'address'
+            internalType: "address",
+            name: "addr",
+            type: "address",
           },
           {
-            internalType: 'string',
-            name: 'message',
-            type: 'string'
-          }
+            internalType: "string",
+            name: "message",
+            type: "string",
+          },
         ],
-        internalType: 'struct ChatMessage',
-        name: '',
-        type: 'tuple'
-      }
+        internalType: "struct ChatMessage",
+        name: "",
+        type: "tuple",
+      },
     ],
-    stateMutability: 'view',
-    type: 'function'
-  }
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 export class IChatter__factory {
@@ -71,7 +71,10 @@ export class IChatter__factory {
   static createInterface(): IChatterInterface {
     return new utils.Interface(_abi) as IChatterInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): IChatter {
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): IChatter {
     return new Contract(address, _abi, signerOrProvider) as IChatter;
   }
 }

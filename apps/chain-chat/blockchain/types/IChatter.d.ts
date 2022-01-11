@@ -12,27 +12,42 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
-  CallOverrides
-} from 'ethers';
-import { BytesLike } from '@ethersproject/bytes';
-import { Listener, Provider } from '@ethersproject/providers';
-import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi';
-import type { TypedEventFilter, TypedEvent, TypedListener } from './common';
+  CallOverrides,
+} from "ethers";
+import { BytesLike } from "@ethersproject/bytes";
+import { Listener, Provider } from "@ethersproject/providers";
+import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IChatterInterface extends ethers.utils.Interface {
   functions: {
-    'addMessage()': FunctionFragment;
-    'allMessages()': FunctionFragment;
-    'latestMessage()': FunctionFragment;
+    "addMessage()": FunctionFragment;
+    "allMessages()": FunctionFragment;
+    "latestMessage()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: 'addMessage', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'allMessages', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'latestMessage', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "addMessage",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allMessages",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "latestMessage",
+    values?: undefined
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'addMessage', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'allMessages', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'latestMessage', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "addMessage", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "allMessages",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "latestMessage",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -81,31 +96,49 @@ export class IChatter extends BaseContract {
   interface: IChatterInterface;
 
   functions: {
-    addMessage(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>;
+    addMessage(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    allMessages(overrides?: CallOverrides): Promise<[([string, string] & { addr: string; message: string })[]]>;
+    allMessages(
+      overrides?: CallOverrides
+    ): Promise<[([string, string] & { addr: string; message: string })[]]>;
 
-    latestMessage(overrides?: CallOverrides): Promise<[[string, string] & { addr: string; message: string }]>;
+    latestMessage(
+      overrides?: CallOverrides
+    ): Promise<[[string, string] & { addr: string; message: string }]>;
   };
 
-  addMessage(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>;
+  addMessage(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  allMessages(overrides?: CallOverrides): Promise<([string, string] & { addr: string; message: string })[]>;
+  allMessages(
+    overrides?: CallOverrides
+  ): Promise<([string, string] & { addr: string; message: string })[]>;
 
-  latestMessage(overrides?: CallOverrides): Promise<[string, string] & { addr: string; message: string }>;
+  latestMessage(
+    overrides?: CallOverrides
+  ): Promise<[string, string] & { addr: string; message: string }>;
 
   callStatic: {
     addMessage(overrides?: CallOverrides): Promise<void>;
 
-    allMessages(overrides?: CallOverrides): Promise<([string, string] & { addr: string; message: string })[]>;
+    allMessages(
+      overrides?: CallOverrides
+    ): Promise<([string, string] & { addr: string; message: string })[]>;
 
-    latestMessage(overrides?: CallOverrides): Promise<[string, string] & { addr: string; message: string }>;
+    latestMessage(
+      overrides?: CallOverrides
+    ): Promise<[string, string] & { addr: string; message: string }>;
   };
 
   filters: {};
 
   estimateGas: {
-    addMessage(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>;
+    addMessage(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     allMessages(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -113,7 +146,9 @@ export class IChatter extends BaseContract {
   };
 
   populateTransaction: {
-    addMessage(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>;
+    addMessage(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     allMessages(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

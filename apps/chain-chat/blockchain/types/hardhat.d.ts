@@ -2,61 +2,95 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { ethers } from 'ethers';
-import { FactoryOptions, HardhatEthersHelpers as HardhatEthersHelpersBase } from '@nomiclabs/hardhat-ethers/types';
+import { ethers } from "ethers";
+import {
+  FactoryOptions,
+  HardhatEthersHelpers as HardhatEthersHelpersBase,
+} from "@nomiclabs/hardhat-ethers/types";
 
-import * as Contracts from '.';
+import * as Contracts from ".";
 
-declare module 'hardhat/types/runtime' {
+declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: 'ERC20',
+      name: "ERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20__factory>;
     getContractFactory(
-      name: 'IERC20Metadata',
+      name: "IERC20Metadata",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Metadata__factory>;
     getContractFactory(
-      name: 'IERC20',
+      name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: 'Chatter',
+      name: "Chatter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Chatter__factory>;
     getContractFactory(
-      name: 'IChatter',
+      name: "IChatter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IChatter__factory>;
     getContractFactory(
-      name: 'ISPT',
+      name: "ISPT",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ISPT__factory>;
     getContractFactory(
-      name: 'SpaceChatERC20Token',
+      name: "SpaceChatERC20Token",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SpaceChatERC20Token__factory>;
 
-    getContractAt(name: 'ERC20', address: string, signer?: ethers.Signer): Promise<Contracts.ERC20>;
-    getContractAt(name: 'IERC20Metadata', address: string, signer?: ethers.Signer): Promise<Contracts.IERC20Metadata>;
-    getContractAt(name: 'IERC20', address: string, signer?: ethers.Signer): Promise<Contracts.IERC20>;
-    getContractAt(name: 'Chatter', address: string, signer?: ethers.Signer): Promise<Contracts.Chatter>;
-    getContractAt(name: 'IChatter', address: string, signer?: ethers.Signer): Promise<Contracts.IChatter>;
-    getContractAt(name: 'ISPT', address: string, signer?: ethers.Signer): Promise<Contracts.ISPT>;
     getContractAt(
-      name: 'SpaceChatERC20Token',
+      name: "ERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20>;
+    getContractAt(
+      name: "IERC20Metadata",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20Metadata>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "Chatter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Chatter>;
+    getContractAt(
+      name: "IChatter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IChatter>;
+    getContractAt(
+      name: "ISPT",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISPT>;
+    getContractAt(
+      name: "SpaceChatERC20Token",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SpaceChatERC20Token>;
 
     // default types
-    getContractFactory(name: string, signerOrOptions?: ethers.Signer | FactoryOptions): Promise<ethers.ContractFactory>;
+    getContractFactory(
+      name: string,
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<ethers.ContractFactory>;
     getContractFactory(
       abi: any[],
       bytecode: ethers.utils.BytesLike,
       signer?: ethers.Signer
     ): Promise<ethers.ContractFactory>;
-    getContractAt(nameOrAbi: string | any[], address: string, signer?: ethers.Signer): Promise<ethers.Contract>;
+    getContractAt(
+      nameOrAbi: string | any[],
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<ethers.Contract>;
   }
 }
